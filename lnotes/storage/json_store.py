@@ -17,5 +17,3 @@ def save_notes(notes):
 
     with open(NOTES_FILE, "w") as file:
         json.dump(notes, file, indent=4)
-
-    print("Saved successfully")
