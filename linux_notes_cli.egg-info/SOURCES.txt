@@ -1,0 +1,15 @@
+setup.py
+linux_notes_cli.egg-info/PKG-INFO
+linux_notes_cli.egg-info/SOURCES.txt
+linux_notes_cli.egg-info/dependency_links.txt
+linux_notes_cli.egg-info/entry_points.txt
+linux_notes_cli.egg-info/top_level.txt
+lnotes/__init__.py
+lnotes/main.py
+lnotes/commands/__init__.py
+lnotes/commands/add.py
+lnotes/commands/delete.py
+lnotes/commands/list.py
+lnotes/commands/search.py
+lnotes/commands/update.py
+lnotes/commands/view.py

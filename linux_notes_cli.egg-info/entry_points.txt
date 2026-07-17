@@ -1,0 +1,2 @@
+[console_scripts]
+lnotes = lnotes.main:main
