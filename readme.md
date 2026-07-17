@@ -1,3 +1,5 @@
+<img width="1014" height="743" alt="image" src="https://github.com/user-attachments/assets/bc997dce-8713-4202-89af-c213f8c1ed4c" />
+
 # Linux Notes CLI
 
 A simple command-line note-taking application built with Python. This project demonstrates how to build a professional CLI application with a modular architecture, JSON storage, and command-based interactions.
