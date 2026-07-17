@@ -15,4 +15,5 @@ def load_notes():
 
 def save_notes(notes):
 
-[]        json.dump(notes, file, indent=4)
+    with open(NOTES_FILE, "w") as file:
+        json.dump(notes, file, indent=4)
