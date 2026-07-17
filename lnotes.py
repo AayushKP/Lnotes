@@ -1,12 +1,11 @@
 import json
 import sys
+import uuid
 
 NOTES_FILE = "notes.json"
 
 
-# -------------------------
 # STORAGE FUNCTIONS
-# -------------------------
 
 
 def load_notes():
@@ -25,9 +24,7 @@ def save_notes(notes):
         json.dump(notes, file, indent=4)
 
 
-# -------------------------
 # ADD NOTE
-# -------------------------
 
 
 def add_note(title):
@@ -36,7 +33,7 @@ def add_note(title):
 
     content = input("Enter content: ")
 
-    note = {"id": len(notes) + 1, "title": title, "content": content}
+    note = {"id": str(uuid.uuid4()), "title": title, "content": content}
 
     notes.append(note)
 
@@ -45,9 +42,7 @@ def add_note(title):
     print("Note saved!")
 
 
-# -------------------------
 # LIST NOTES
-# -------------------------
 
 
 def list_notes():
@@ -64,9 +59,7 @@ def list_notes():
         print(f"{note['id']}. {note['title']}")
 
 
-# -------------------------
 # VIEW NOTE
-# -------------------------
 
 
 def view_note(note_id):
@@ -75,10 +68,7 @@ def view_note(note_id):
 
     for note in notes:
         if note["id"] == note_id:
-            print("\nTitle:")
             print(note["title"])
-
-            print("\nContent:")
             print(note["content"])
 
             return
@@ -86,38 +76,68 @@ def view_note(note_id):
     print("Note not found")
 
 
-# -------------------------
 # DELETE NOTE
-# -------------------------
 
 
 def delete_note(note_id):
 
     notes = load_notes()
 
-    updated_notes = []
+    updated = []
+
+    for note in notes:
+        if note["id"] != note_id:
+            updated.append(note)
+
+    save_notes(updated)
+
+    print("Deleted")
+
+
+# SEARCH TITLE
+
+
+def search_notes(keyword):
+
+    notes = load_notes()
 
     found = False
 
     for note in notes:
-        if note["id"] == note_id:
+        if keyword.lower() in note["title"].lower():
+            print("\nFound:")
+            print(note["title"])
+            print(note["content"])
+
             found = True
 
-        else:
-            updated_notes.append(note)
-
-    if found:
-        save_notes(updated_notes)
-
-        print("Note deleted!")
-
-    else:
-        print("Note not found")
+    if not found:
+        print("No matching notes")
 
 
-# -------------------------
+# UPDATE
+
+
+def update_note(note_id):
+
+    notes = load_notes()
+
+    for note in notes:
+        if note["id"] == note_id:
+            new_content = input("New content: ")
+
+            note["content"] = new_content
+
+            save_notes(notes)
+
+            print("Updated")
+
+            return
+
+    print("Note not found")
+
+
 # CLI HANDLER
-# -------------------------
 
 if len(sys.argv) < 2:
     print(
@@ -152,6 +172,13 @@ if command == "add":
 
     add_note(title)
 
+# UPDATE
+
+elif command == "update":
+    note_id = sys.argv[2]
+
+    update_note(note_id)
+
 
 # LIST
 
@@ -171,6 +198,12 @@ elif command == "view":
 
     view_note(note_id)
 
+# SEARCH
+
+elif command == "search":
+    keyword = sys.argv[2]
+
+    search_notes(keyword)
 
 # DELETE
 
