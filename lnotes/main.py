@@ -1,4 +1,4 @@
-import sys
+import argparse
 
 from lnotes.commands.add import add_note
 from lnotes.commands.delete import delete_note
@@ -10,55 +10,66 @@ from lnotes.commands.view import view_note
 
 def main():
 
-    if len(sys.argv) < 2:
-        print(
-            """
-Usage:
+    parser = argparse.ArgumentParser(prog="lnotes", description="Linux Notes CLI")
 
-lnotes add <title>
+    subparsers = parser.add_subparsers(dest="command")
 
-lnotes list
-"""
-        )
+    # ADD
 
-        return
+    add_parser = subparsers.add_parser("add", help="Add a new note")
 
-    command = sys.argv[1]
+    add_parser.add_argument("title", help="Note title")
 
-    if command == "add":
-        if len(sys.argv) < 3:
-            print("Usage: lnotes add <title>")
-            return
+    # LIST
 
-        title = sys.argv[2]
+    subparsers.add_parser("list", help="List all notes")
 
-        add_note(title)
+    # VIEW
 
-    elif command == "list":
+    view_parser = subparsers.add_parser("view", help="View a note")
+
+    view_parser.add_argument("id", help="Note ID")
+
+    # DELETE
+
+    delete_parser = subparsers.add_parser("delete", help="Delete a note")
+
+    delete_parser.add_argument("id", help="Note ID")
+
+    # UPDATE
+
+    update_parser = subparsers.add_parser("update", help="Update note")
+
+    update_parser.add_argument("id", help="Note ID")
+
+    # SEARCH
+
+    search_parser = subparsers.add_parser("search", help="Search notes")
+
+    search_parser.add_argument("keyword", help="Search keyword")
+
+    args = parser.parse_args()
+
+    if args.command == "add":
+        add_note(args.title)
+
+    elif args.command == "list":
         list_notes()
 
-    elif command == "view":
-        note_id = sys.argv[2]
+    elif args.command == "view":
+        view_note(args.id)
 
-        view_note(note_id)
+    elif args.command == "delete":
+        delete_note(args.id)
 
-    elif command == "delete":
-        note_id = sys.argv[2]
+    elif args.command == "update":
+        update_note(args.id)
 
-        delete_note(note_id)
-
-    elif command == "update":
-        note_id = sys.argv[2]
-
-        update_note(note_id)
-
-    elif command == "search":
-        keyword = sys.argv[2]
-
-        search_notes(keyword)
+    elif args.command == "search":
+        search_notes(args.keyword)
 
     else:
-        print("Unknown command")
+        parser.print_help()
 
 
 if __name__ == "__main__":
